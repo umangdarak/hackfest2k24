@@ -7,6 +7,7 @@ import { Provider } from "react-native-paper";
 import Login from "./src/auth/Login";
 import Register from "./src/auth/Register";
 import { MD3DarkTheme } from "react-native-paper";
+import React from "react";
 
 const theme={...MD3DarkTheme
   ,
