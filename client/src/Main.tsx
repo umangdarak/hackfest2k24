@@ -7,10 +7,12 @@ import Disaster from './screens/Disaster';
 import Volunteer from './screens/Volunteer';
 import { useTheme } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const Tab=createBottomTabNavigator();
 const Main = () => {
   const theme=useTheme();
+  const navigation=useNavigation();
   return (
     <Tab.Navigator
     screenOptions={({ route }) => ({
@@ -31,8 +33,10 @@ const Main = () => {
       }
     })}
   >
-    <Tab.Screen name="Home" component={Home} 
-    options={{tabBarIcon:({focused,color,size})=>{
+    <Tab.Screen name="Home" component={Home} initialParams={navigation}
+    options={
+      
+      {tabBarIcon:({focused,color,size})=>{
       return <View className="items-center justify-center top-3"><MaterialCommunityIcons name='home' color={color} size={size} className="top-10 flex"/></View>;
     }}}/>
     <Tab.Screen name="Community" component={Community}  options={{tabBarIcon:({focused,color,size})=>{
