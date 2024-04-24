@@ -47,7 +47,7 @@ Router.get("/get", async (req, res) => {
       if (valid) {
         // const expiresIn = '8h';
         const token = jwt.sign({ username }, process.env.SECRET);
-        res.status(200).json({ Username: user.Username, token: token });
+        res.status(200).json({ Username: user.Username, token: token , id:user._id });
       } else {
         res.status(401).json({ error: "Passwords do not match" });
       }

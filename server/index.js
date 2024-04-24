@@ -1,11 +1,14 @@
 const express = require("express");
 const cors = require("cors");
+const bodyParser = require("body-parser"); // Import body-parser
+
 require("dotenv").config();
 const db = require("./MongoDBConnection");
 const auth = require("./auth");
 const post = require("./PostAuth");
 const app = express();
 app.use(cors());
+app.use(bodyParser.json({ limit: "20mb" })); // Set payload size limit to 10 megabytes
 
 app.use(express.json());
 app.listen(5000, () => {

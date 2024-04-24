@@ -25,14 +25,14 @@ export default function Login() {
     if (username != "" && password != "") {
       try {
         let res = await fetch(
-          `http://192.168.1.104:5000/user/get?username=${username}&password=${password}`
+          `${url}/user/get?username=${username}&password=${password}`
         );
         if (!res.ok) {
           throw new Error(`HTTP error! Status: ${res.status}`);
         }
         const data = await res.json();
         console.log(data);
-        saveToken({name:data['name'],token:data['token']});
+        saveToken({name:data['Username'],token:data['token'],id:data['id']});
         // await AsyncStorage.setItem("token", data["token"]);
         // await AsyncStorage.setItem("name", data["name"]);
       } catch (error) {

@@ -1,40 +1,37 @@
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
-
-// Multer setup
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/"); // Where files should be stored
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname); // Keeping original file name
-  },
-});
-const upload = multer({ storage: storage });
-
-// Handle POST request with image upload
-router.post("/posts/upload", upload.single("image"), (req, res) => {
-  const formData = {
-    name: req.body.name,
-    type: req.file.mimetype,
-    uri: req.file.buffer.toString("base64"),
-  };
-
-  // Do something with formData
-  console.log(formData);
-
-  res.sendStatus(200);
-});
-
-// Error handling middleware
-router.use((err, req, res, next) => {
-  if (err instanceof multer.MulterError) {
-    console.error("Multer error:", err);
-    return res.status(500).send("An error occurred while uploading the file.");
+const Post = require("../server/picture");
+router.post("/upload", async (req, res) => {
+  if (!req.body || !req.body.image) {
+    return res.status(400).send("No image data received.");
   }
 
-  next();
+  try {
+    const imageData = req.body.image; // Accessing directly from req.body.image
+
+    // Convert Base64 to buffer
+    const bufferData = Buffer.from(imageData, "base64");
+
+    const post = new Post({
+      author: req.body.id,
+      authorName: req.body.author,
+      data: bufferData,
+      created: Date.now(),
+      content: req.body.content,
+    });
+
+    await post.save();
+    res.status(200).send("Image uploaded successfully");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
 });
+
+router.get("/getposts",async(req,res)=>{
+  const result=await Post.find({});
+  res.json(JSON.stringify(result));
+})
+
 
 module.exports = router;

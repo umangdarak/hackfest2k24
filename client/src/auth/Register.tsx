@@ -21,7 +21,7 @@ const Register = () => {
   const handleRegister = async () => {
     if (username != "" && password != "") {
       try {
-        let res = await fetch(`http://192.168.1.104:5000/user/post`, {
+        let res = await fetch(`${url}/user/post`, {
           method: "POST",
           headers: { "Content-type": "application/json" },
           body: JSON.stringify({ username: username, password: password }),
